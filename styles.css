@@ -25,6 +25,8 @@ th {
 }
 li:active, li:focus{
     background:#336699;
+    font-size: 12px;
+    margin:0px
 }
 button:focus, button:active{
     background:#336699;

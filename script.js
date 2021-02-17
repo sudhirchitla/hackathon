@@ -69,7 +69,7 @@ async function searchGitHubUsers(e) {
 
         if (searchUsersData.total_count > 0) {
             document.getElementById('userprofile').innerHTML = '';
-            document.getElementById('user_count').innerHTML = '<b>' + searchUsersData.total_count + ' users</b>';
+            document.getElementById('user_count').innerHTML = '<h4>' + searchUsersData.total_count + ' users</h4>';
             searchUsersData.items.forEach(element => {
                 console.log(element);
 
@@ -86,7 +86,7 @@ async function searchGitHubUsers(e) {
 
         if (searchRepoData.total_count > 0) {
             document.getElementById('userprofile').innerHTML = '';
-            document.getElementById('user_count').innerHTML = '<b>' + searchRepoData.total_count + ' repository results</b>';
+            document.getElementById('user_count').innerHTML = '<h4>' + searchRepoData.total_count + ' repository results</h4>';
 
 
             searchRepoData.items.forEach(element => {
@@ -150,6 +150,12 @@ async function searchGitHubUsers(e) {
         a1.className = "card-link card-title font-weight-bold";
         a1.appendChild(document.createTextNode(userProfile.login));
         divnode1.appendChild(a);
+
+        var button = document.createElement('button');
+        button.className = "btn border-0 bg-secondary text-white btn-dark btn-sm ml-5 span-block float-right";
+        button.appendChild(document.createTextNode('Follow'));
+        divnode1.appendChild(button);
+
 
         var p = document.createElement('p');
         p.className = "card-text";
