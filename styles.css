@@ -1,0 +1,42 @@
+
+html, body{
+    scroll-behavior: smooth;
+}
+
+body{
+    padding: 0rem 0rem;
+    }
+    .card-img-overlay {
+    background-color: rgba(#000, 0.4);
+    }
+    .avatar {
+    border: 0.3rem solid rgba(#fff, 0.3);
+    margin-top: -6rem;
+    margin-bottom: 1rem;
+    max-width: 9rem;
+    }
+
+div {
+    font-family: monospace;
+    font-size: 16px;
+}
+th {
+    font-size: 16px;
+}
+li:active, li:focus{
+    background:#336699;
+}
+button:focus, button:active{
+    background:#336699;
+}
+
+img {
+    
+    width: 130px;
+    height: 180px;
+}
+
+.nav-img {   
+    width: 30px;
+    height: 30px;
+}
