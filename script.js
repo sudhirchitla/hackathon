@@ -8,6 +8,8 @@ var repository_search_url = "https://api.github.com/search/repositories?q=";
 
 var itemList = document.getElementById('items');
 
+var userCount = document.getElementById('user_count');
+
 
 var search = document.getElementById('search');
 var search_btn = document.getElementById('search_btn');
@@ -66,12 +68,14 @@ async function searchGitHubUsers(e) {
     function displayUsers() {
 
         if (searchUsersData.total_count > 0) {
-            document.getElementById('content').innerHTML = '';
+            document.getElementById('userprofile').innerHTML = '';
+            document.getElementById('user_count').innerHTML = '<b>' + searchUsersData.total_count + ' users</b>';
             searchUsersData.items.forEach(element => {
                 console.log(element);
 
-                userInfo(element.url);
-              
+                //userInfo(element.url);
+                userInfoCard(element.url);
+
             });
         }
         
@@ -81,8 +85,10 @@ async function searchGitHubUsers(e) {
     function displayRepos() {
 
         if (searchRepoData.total_count > 0) {
-            document.getElementById('content').innerHTML = '';
-            // document.getElementById('desc').innerHTML ='';
+            document.getElementById('userprofile').innerHTML = '';
+            document.getElementById('user_count').innerHTML = '<b>' + searchRepoData.total_count + ' repository results</b>';
+
+
             searchRepoData.items.forEach(element => {
 
                 var node = document.createElement("tr");
@@ -103,7 +109,7 @@ async function searchGitHubUsers(e) {
                 node.appendChild(td2);
                 td2.appendChild(document.createTextNode(element.email)); */
         
-                document.getElementById("content").appendChild(node); 
+                document.getElementById("userprofile").appendChild(node); 
             });
         }
 
@@ -111,52 +117,74 @@ async function searchGitHubUsers(e) {
         
     }
 
-    async function userInfo(url){
+    
+
+
+    async function userInfoCard(url){
         //console.log('userURL ' + url);
         let userInfoResponse = await fetch(url);
         let userProfile = await userInfoResponse.json();
+        console.log(userProfile);
 
-        //console.log(userProfile);
+        var divnode = document.createElement("div");
+        divnode.className = "card";
+        var divnode1 = document.createElement("div");
+        divnode1.className = "card-body";
         
-        var node = document.createElement("tr");
-        var td = document.createElement("td");
+        divnode.appendChild(divnode1);
 
-        node.appendChild(td);
-        td.className = "font-weight-bolder text-secondary p-3";
         var img = document.createElement("img");
         img.className = 'nav-img rounded-circle';
         img.src = userProfile.avatar_url;
-        td.appendChild(img);
+        divnode1.appendChild(img);
 
-        var td1 = document.createElement("td");
-        td1.className = "font-weight-bolder text-secondary p-3";
-        node.appendChild(td1);
-        if (userProfile.name != null) 
-        td1.appendChild(document.createTextNode(userProfile.name));        
+        var a = document.createElement('a');
+        a.className = "card-link card-title font-weight-bold m-3";
+        if (userProfile.name != null)
+        a.appendChild(document.createTextNode(userProfile.name));
         else
-        td1.appendChild(document.createTextNode(userProfile.login));        
+        a1.appendChild(document.createTextNode(userProfile.login));
+        divnode1.appendChild(a);
+
+        var a1 = document.createElement('a');
+        a1.className = "card-link card-title font-weight-bold";
+        a1.appendChild(document.createTextNode(userProfile.login));
+        divnode1.appendChild(a);
+
+        var p = document.createElement('p');
+        p.className = "card-text";
+        if (userProfile.bio != null)
+        p.appendChild(document.createTextNode(userProfile.bio));
+        divnode1.appendChild(p);
+
+        var h6 = document.createElement('h6');
+        h6.className = "card-subtitle mb-2 text-muted";
+        if (userProfile.location != null)
+        h6.appendChild(document.createTextNode(userProfile.location));
+        divnode1.appendChild(h6);        
 
 
-        var td2 = document.createElement("td");
-        td2.className = "font-weight-bolder text-secondary p-3";
-        node.appendChild(td2);
-        td2.appendChild(document.createTextNode(userProfile.login)); 
+        document.getElementById('userprofile').appendChild(divnode);
 
-        var td3 = document.createElement("td");
-        td3.className = "font-weight-bolder text-secondary p-3";
-        node.appendChild(td3);
-        if (userProfile.location != null) 
-        td3.appendChild(document.createTextNode(userProfile.location)); 
 
-        var td4 = document.createElement("td");
-        td4.className = "font-weight-bolder text-secondary p-3";
-        node.appendChild(td4);
-        if (userProfile.bio != null) 
-        td4.appendChild(document.createTextNode(userProfile.bio));
 
-        document.getElementById("content").appendChild(node);   
 
-    }    
+
+/* 
+
+        <div class="card">
+        <div class="card-body">
+          <a href="#" class="card-link card-title font-weight-bold">user name</a> 
+          <a href="#" class="card-link font-weight-bold">login id</a>
+          <button class="btn border-0 bg-secondary text-white btn-dark btn-sm ml-5">Follow </button>
+          <p class="card-text">description </p>
+          <h6 class="card-subtitle mb-2 text-muted">location</h6>
+        </div>
+      </div> 
+
+ */
+
+    }
 
 
 
