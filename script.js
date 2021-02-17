@@ -14,12 +14,16 @@ search.addEventListener('keyup', searchGitHub);
 search_btn.addEventListener('click', searchGitHubUsers);
 
 
-async function searchGitHub(event) {
+//async 
+function searchGitHub(event) {
     var uname = document.getElementById('search').value;
     if (event.keyCode === 13) {
-    let githubResponse = await fetch(searchUri+uname);
-    let searchUsersData = await githubResponse.json();
-    console.log( searchUsersData );
+/*     let githubResponse = await fetch(searchUri+uname);
+    let searchUsersData = await githubResponse.json(); 
+        console.log( searchUsersData );
+*/
+    searchGitHubUsers();
+
     }
   }
 
@@ -27,11 +31,11 @@ async function searchGitHubUsers(e) {
     var uname = document.getElementById('search').value;
     let githubResponse = await fetch(searchUri+uname);
     let searchUsersData = await githubResponse.json();
-    console.log(searchUsersData);
+    //console.log(searchUsersData);
 
     let githubResponseRepo = await fetch(repository_search_url+uname);
     let searchRepoData = await githubResponseRepo.json();
-    console.log(searchRepoData);
+    //console.log(searchRepoData);
     
 
     //var newItem = document.getElementById('item').value;
@@ -62,7 +66,7 @@ async function searchGitHubUsers(e) {
         if (searchUsersData.total_count > 0) {
             document.getElementById('content').innerHTML = '';
             searchUsersData.items.forEach(element => {
-                console.log(element);
+                //console.log(element);
                 var node = document.createElement("tr");
                 var td = document.createElement("td");
         
