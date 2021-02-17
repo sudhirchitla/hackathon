@@ -36,21 +36,94 @@ async function searchGitHubUsers(e) {
 
     //var newItem = document.getElementById('item').value;
     var newItem1 = 'Users # '
-    var newItem2 = 'Repos # '
+    var newItem2 = 'Repositories # '
 
     // Create new li element
     var li = document.createElement('li');
-    li.className = 'list-group-item';
-
-    li.appendChild(document.createTextNode(newItem1 + searchUsersData.total_count));
-    
-    // Append li to list
+    li.className = 'list-group-item font-weight-bolder text-info';
+    li.id = 'repo'
+    li.appendChild(document.createTextNode(newItem2 + searchRepoData.total_count));
     itemList.appendChild(li);
 
     li = document.createElement('li');
-    li.className = 'list-group-item';
-    li.appendChild(document.createTextNode(newItem2 + searchRepoData.total_count));
+    li.className = 'list-group-item font-weight-bolder text-info';
+    li.id = 'users'
+    li.appendChild(document.createTextNode(newItem1 + searchUsersData.total_count));
     itemList.appendChild(li);
+
+
+    let repo = document.getElementById('repo');
+    let users = document.getElementById('users');
+    repo.addEventListener('click', displayRepos);
+    users.addEventListener('click', displayUsers);
+
+    function displayUsers() {
+
+        if (searchUsersData.total_count > 0) {
+            document.getElementById('content').innerHTML = '';
+            searchUsersData.items.forEach(element => {
+                console.log(element);
+                var node = document.createElement("tr");
+                var td = document.createElement("td");
+        
+                node.appendChild(td);
+                td.className = "font-weight-bolder text-secondary p-3";
+                var img = document.createElement("img");
+                img.className = 'nav-img rounded';
+                img.src = element.avatar_url;
+                //td.appendChild(document.createTextNode(element.avatar_url));
+                td.appendChild(img);
+        
+                var td1 = document.createElement("td");
+                td1.className = "font-weight-bolder text-secondary";
+                node.appendChild(td1);
+                td1.appendChild(document.createTextNode(element.login));
+                
+                /*
+                var td2 = document.createElement("td");
+                node.appendChild(td2);
+                td2.appendChild(document.createTextNode(element.email)); */
+        
+                document.getElementById("content").appendChild(node);                 
+            });
+        }
+        
+
+    }
+
+    function displayRepos() {
+
+        if (searchRepoData.total_count > 0) {
+            document.getElementById('content').innerHTML = '';
+            searchRepoData.items.forEach(element => {
+
+                var node = document.createElement("tr");
+                var td = document.createElement("td");
+        
+                node.appendChild(td);
+                td.className = "font-weight-bolder text-secondary p-3";
+                td.appendChild(document.createTextNode(element.full_name));
+        
+                var td1 = document.createElement("td");
+                node.appendChild(td1);
+                td1.appendChild(document.createTextNode(element.description));
+                
+                /*
+                var td2 = document.createElement("td");
+                node.appendChild(td2);
+                td2.appendChild(document.createTextNode(element.email)); */
+        
+                document.getElementById("content").appendChild(node); 
+            });
+        }
+
+
+        
+    }
+
+    
+
+
 
 
 /*     let githubResponse = await fetch(searchUsersUri);
