@@ -4,6 +4,8 @@ var searchUri = 'https://api.github.com/search/users?q=';
 var repository_search_url = "https://api.github.com/search/repositories?q=";
 
 
+
+
 var itemList = document.getElementById('items');
 
 
@@ -16,20 +18,20 @@ search_btn.addEventListener('click', searchGitHubUsers);
 
 //async 
 function searchGitHub(event) {
-    var uname = document.getElementById('search').value;
+
     if (event.keyCode === 13) {
-/*     let githubResponse = await fetch(searchUri+uname);
-    let searchUsersData = await githubResponse.json(); 
-        console.log( searchUsersData );
-*/
+
     searchGitHubUsers();
 
     }
   }
 
 async function searchGitHubUsers(e) {
+
     var uname = document.getElementById('search').value;
-    let githubResponse = await fetch(searchUri+uname);
+    if (uname == '') uname = 'test';
+
+    let githubResponse = await fetch(searchUri+uname+'&per_page=10');
     let searchUsersData = await githubResponse.json();
     //console.log(searchUsersData);
 
@@ -37,10 +39,10 @@ async function searchGitHubUsers(e) {
     let searchRepoData = await githubResponseRepo.json();
     //console.log(searchRepoData);
     
-
     //var newItem = document.getElementById('item').value;
     var newItem1 = 'Users # '
     var newItem2 = 'Repositories # '
+
 
     // Create new li element
     var li = document.createElement('li');
@@ -66,29 +68,10 @@ async function searchGitHubUsers(e) {
         if (searchUsersData.total_count > 0) {
             document.getElementById('content').innerHTML = '';
             searchUsersData.items.forEach(element => {
-                //console.log(element);
-                var node = document.createElement("tr");
-                var td = document.createElement("td");
-        
-                node.appendChild(td);
-                td.className = "font-weight-bolder text-secondary p-3";
-                var img = document.createElement("img");
-                img.className = 'nav-img rounded-circle';
-                img.src = element.avatar_url;
-                //td.appendChild(document.createTextNode(element.avatar_url));
-                td.appendChild(img);
-        
-                var td1 = document.createElement("td");
-                td1.className = "font-weight-bolder text-secondary";
-                node.appendChild(td1);
-                td1.appendChild(document.createTextNode(element.login));
-                
-                /*
-                var td2 = document.createElement("td");
-                node.appendChild(td2);
-                td2.appendChild(document.createTextNode(element.email)); */
-        
-                document.getElementById("content").appendChild(node);                 
+                console.log(element);
+
+                userInfo(element.url);
+              
             });
         }
         
@@ -99,6 +82,7 @@ async function searchGitHubUsers(e) {
 
         if (searchRepoData.total_count > 0) {
             document.getElementById('content').innerHTML = '';
+            // document.getElementById('desc').innerHTML ='';
             searchRepoData.items.forEach(element => {
 
                 var node = document.createElement("tr");
@@ -107,10 +91,12 @@ async function searchGitHubUsers(e) {
                 node.appendChild(td);
                 td.className = "font-weight-bolder text-secondary p-3";
                 td.appendChild(document.createTextNode(element.full_name));
-        
+                
+                if (element.description != null) {
                 var td1 = document.createElement("td");
                 node.appendChild(td1);
                 td1.appendChild(document.createTextNode(element.description));
+                }
                 
                 /*
                 var td2 = document.createElement("td");
@@ -125,7 +111,52 @@ async function searchGitHubUsers(e) {
         
     }
 
-    
+    async function userInfo(url){
+        //console.log('userURL ' + url);
+        let userInfoResponse = await fetch(url);
+        let userProfile = await userInfoResponse.json();
+
+        //console.log(userProfile);
+        
+        var node = document.createElement("tr");
+        var td = document.createElement("td");
+
+        node.appendChild(td);
+        td.className = "font-weight-bolder text-secondary p-3";
+        var img = document.createElement("img");
+        img.className = 'nav-img rounded-circle';
+        img.src = userProfile.avatar_url;
+        td.appendChild(img);
+
+        var td1 = document.createElement("td");
+        td1.className = "font-weight-bolder text-secondary p-3";
+        node.appendChild(td1);
+        if (userProfile.name != null) 
+        td1.appendChild(document.createTextNode(userProfile.name));        
+        else
+        td1.appendChild(document.createTextNode(userProfile.login));        
+
+
+        var td2 = document.createElement("td");
+        td2.className = "font-weight-bolder text-secondary p-3";
+        node.appendChild(td2);
+        td2.appendChild(document.createTextNode(userProfile.login)); 
+
+        var td3 = document.createElement("td");
+        td3.className = "font-weight-bolder text-secondary p-3";
+        node.appendChild(td3);
+        if (userProfile.location != null) 
+        td3.appendChild(document.createTextNode(userProfile.location)); 
+
+        var td4 = document.createElement("td");
+        td4.className = "font-weight-bolder text-secondary p-3";
+        node.appendChild(td4);
+        if (userProfile.bio != null) 
+        td4.appendChild(document.createTextNode(userProfile.bio));
+
+        document.getElementById("content").appendChild(node);   
+
+    }    
 
 
 
