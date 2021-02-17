@@ -73,7 +73,7 @@ async function searchGitHubUsers(e) {
                 node.appendChild(td);
                 td.className = "font-weight-bolder text-secondary p-3";
                 var img = document.createElement("img");
-                img.className = 'nav-img rounded';
+                img.className = 'nav-img rounded-circle';
                 img.src = element.avatar_url;
                 //td.appendChild(document.createTextNode(element.avatar_url));
                 td.appendChild(img);
